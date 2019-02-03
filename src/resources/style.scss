@@ -1,4 +1,4 @@
-@import '~Tiie/Styles/tiie-variables.scss';
+@import '~Tiie/Styles/variables.scss';
 
 .em-notifications__notification {
     border: 1px silver dotted;
@@ -28,28 +28,28 @@
 }
 
 .em-notifications__notification.--info {
-    box-shadow: 0px 0px 10px 1px $tiie-color-info;
-    border-right: 5px $tiie-color-info solid;
+    box-shadow: 0px 0px 10px 1px $tiieColorInfoBoxShadow;
+    border-right: 5px $tiieColorInfoBorder solid;
 }
 
 .em-notifications__notification.--warning {
-    box-shadow: 0px 0px 10px 1px $tiie-color-warning;
-    border-right: 5px $tiie-color-warning solid;
+    box-shadow: 0px 0px 10px 1px $tiieColorWarningBoxShadow;
+    border-right: 5px $tiieColorWarningBorder solid;
 }
 
 .em-notifications__notification.--danger {
-    box-shadow: 0px 0px 10px 1px $tiie-color-danger;
-    border-right: 5px $tiie-color-danger solid;
+    box-shadow: 0px 0px 10px 1px $tiieColorDangerBoxShadow;
+    border-right: 5px $tiieColorDangerBorder solid;
 }
 
 .em-notifications__notification.--success {
-    box-shadow: 0px 0px 10px 1px $tiie-color-success;
-    border-right: 5px $tiie-color-success solid;
+    box-shadow: 0px 0px 10px 1px $tiieColorSuccessBoxShadow;
+    border-right: 5px $tiieColorSuccessBorder solid;
 }
 
 .em-notifications__notification.--error {
-    box-shadow: 0px 0px 10px 1px $tiie-color-error;
-    border-right: 5px $tiie-color-error solid;
+    box-shadow: 0px 0px 10px 1px $tiieColorErrorBoxShadow;
+    border-right: 5px $tiieColorErrorBorder solid;
 }
 
 .em-notifications__notification-icon {
