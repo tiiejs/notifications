@@ -20,7 +20,8 @@ class Service extends TiieObject {
      * Attach notifications mechanism to specific document element.
      *
      * @param {jQuery} target
-     * @params {object} params
+     * @param {object} params
+     *
      * @return {Tiie.Notifications.Notifications}
      */
     attach(target, params = {}) {

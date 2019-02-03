@@ -1,18 +1,20 @@
+/** @module Tiie/Notifications */
 import TiieObject from "Tiie/Object";
+
 import Notification from "Tiie/Notifications/Notification";
 
 import FramesLayout from "Tiie/Frames/Layouts/Layout";
 import FramesLayer from "Tiie/Frames/Layer";
 
 const cn = 'Notifications';
+
+/**
+ * @class
+ */
 class Notifications extends TiieObject {
 
     /**
      * Prepare notifications for given target.
-     *
-     * @param {Tiie.Frames.Service} frames
-     * @param {jQuery} target
-     * @param {object} params
      */
     constructor(frames, target, params = {}) {
         super();
@@ -39,7 +41,7 @@ class Notifications extends TiieObject {
             fixed : params.fixed,
         });
 
-        // Create default lauer.
+        // Create default layer.
         p.framesLayer = p.frames.createLayer(p.framesLayerName, {
             layout : FramesLayout.TYPE_STACK,
             // fixed : params.fixed,
@@ -52,6 +54,7 @@ class Notifications extends TiieObject {
      * Create notification and display it.
      *
      * @param {object} params
+     *
      * @return {Tiie.Notifications.Notification}
      */
     create(params = {}) {
@@ -80,8 +83,6 @@ class Notifications extends TiieObject {
             }, params.duration);
         } else {
             setTimeout(function() {
-                // todo [uncomment]
-                // notification.destroyed = 1;
             }, 3000);
         }
 
@@ -128,4 +129,3 @@ class Notifications extends TiieObject {
 }
 
 export default Notifications;
-
