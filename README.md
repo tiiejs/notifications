@@ -1,12 +1,23 @@
 ## Tiiejs notifications
-Extension to display notifications.
+Mechanism to display a few kinds of notification at application.
+
+Types of notifications.
+- TYPE_NORMAL
+- TYPE_INFO
+- TYPE_WARNING
+- TYPE_DANGER
+- TYPE_SUCCESS
+- TYPE_ERROR
 
 ## Install
 
-Extensions need `tiiejs-frames`.
+### Dependencies
+
+- `tiiejs`
+- `tiiejs-frames`
+- `tiiejs-styles`
 
 ### Webpack
-
 First we need to define alias for Webpack.
 
 ```js
@@ -21,7 +32,6 @@ module.exports = (environment) => {
             alias : {
                 // ...
                 "Tiie/Notifications" : "tiiejs-notifications/src",
-                "Tiie" : "tiiejs/src",
             }
         }
     }
@@ -32,12 +42,23 @@ Then plug extension and define component.
 
 ```js
 import App from "Tiie/App";
-import extensionNotifications from "Tiie/Notifications/extension"
 
-// ...
-let app = new App(jQuery("body"));
+// Extensions
+import extensionNotifications from "Tiie/Notifications/extension";
 
-app.plugin(extensionNotifications);
+let app = window.app = new App(/** ... **/);
+
+app.plugin(extensionNotifications, {
+    windowMarginTop : 50,
+    windowMarginRight : 25,
+    // windowAlign : ["left"],
+    // windowMargin : null,
+    // windowMarginTop : null,
+    // windowMarginLeft : null,
+    // windowMarginRight : null,
+    // windowMarginBottom : null,
+});
+
 app.run();
 ```
 
