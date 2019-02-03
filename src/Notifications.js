@@ -5,6 +5,7 @@ import Notification from "Tiie/Notifications/Notification";
 
 import FramesLayout from "Tiie/Frames/Layouts/Layout";
 import FramesLayer from "Tiie/Frames/Layer";
+import FramesAnimation from "Tiie/Frames/Animation";
 
 const cn = 'Notifications';
 
@@ -39,14 +40,27 @@ class Notifications extends TiieObject {
         // Attach frames for target. Generally Notifications uses Frames.
         p.frames = frames.attach(target, {
             fixed : params.fixed,
+            zIndex : params.zIndex,
         });
 
         // Create default layer.
         p.framesLayer = p.frames.createLayer(p.framesLayerName, {
             layout : FramesLayout.TYPE_STACK,
-            // fixed : params.fixed,
-            align : ["right"],
-            margin : 20,
+            align : params.align ? params.align : ["right"],
+            animationShow : {
+                name : FramesAnimation.ANIMATION_SLIDE_IN_FROM_TOP,
+                params : {},
+            },
+            animationHide : {
+                name : FramesAnimation.ANIMATION_ZOOM_OUT,
+                params : {},
+            },
+
+            margin : params.margin,
+            marginTop : params.marginTop,
+            marginLeft : params.marginLeft,
+            marginRight : params.marginRight,
+            marginBottom : params.marginBottom,
         });
     }
 
@@ -83,6 +97,7 @@ class Notifications extends TiieObject {
             }, params.duration);
         } else {
             setTimeout(function() {
+                notification.destroyed = 1;
             }, 3000);
         }
 
@@ -125,6 +140,46 @@ class Notifications extends TiieObject {
         if (destroyed) {
             p.notifications = p.notifications.filter(notification => !notification.object.is("@destroyed"));
         }
+    }
+
+    testGenerateNotifications() {
+        let p = this.__private(cn);
+
+        this.create({
+            type : Notification.TYPE_NORMAL,
+            title : `Title ${Notification.TYPE_NORMAL}`,
+            message : `Message ${Notification.TYPE_NORMAL}`,
+        });
+
+        this.create({
+            type : Notification.TYPE_INFO,
+            title : `Title ${Notification.TYPE_INFO}`,
+            message : `Message ${Notification.TYPE_INFO}`,
+        });
+
+        this.create({
+            type : Notification.TYPE_WARNING,
+            title : `Title ${Notification.TYPE_WARNING}`,
+            message : `Message ${Notification.TYPE_WARNING}`,
+        });
+
+        this.create({
+            type : Notification.TYPE_DANGER,
+            title : `Title ${Notification.TYPE_DANGER}`,
+            message : `Message ${Notification.TYPE_DANGER}`,
+        });
+
+        this.create({
+            type : Notification.TYPE_SUCCESS,
+            title : `Title ${Notification.TYPE_SUCCESS}`,
+            message : `Message ${Notification.TYPE_SUCCESS}`,
+        });
+
+        this.create({
+            type : Notification.TYPE_ERROR,
+            title : `Title ${Notification.TYPE_ERROR}`,
+            message : `Message ${Notification.TYPE_ERROR}`,
+        });
     }
 }
 

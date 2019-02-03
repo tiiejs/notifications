@@ -26,7 +26,16 @@ class Service extends TiieObject {
      */
     attach(target, params = {}) {
         let p = this.__private(cn),
-            notifications = new Notifications(p.frames, target, params)
+            notifications = new Notifications(p.frames, target, {
+                zIndex : params.zIndex,
+                fixed : params.fixed,
+                align : params.align,
+                margin : params.margin,
+                marginTop : params.marginTop,
+                marginLeft : params.marginLeft,
+                marginRight : params.marginRight,
+                marginBottom : params.marginBottom,
+            })
         ;
 
         p.notifications.push(notifications);
