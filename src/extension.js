@@ -1,5 +1,6 @@
 /** @module Tiie/Notifications */
 import NotificationsService from "Tiie/Notifications/Service";
+import jQuery from "jquery";
 
 import style from "./resources/style.scss";
 
@@ -17,13 +18,15 @@ export default function(app, params = {}) {
     app.components().set("@notifications", service);
 
     // Attach notifications to whole window.
-    app.components().set("@notifications.window", service.attach(app.target(), {
+    app.components().set("@notifications.window", service.attach(app.target(), 1, {
         align : params.windowAlign,
+        animationHideName : params.windowAnimationHideName,
+        animationShowName : params.windowAnimationShowName,
         margin : params.windowMargin,
-        marginTop : params.windowMarginTop,
+        marginBottom : params.windowMarginBottom,
         marginLeft : params.windowMarginLeft,
         marginRight : params.windowMarginRight,
-        marginBottom : params.windowMarginBottom,
+        marginTop : params.windowMarginTop,
     }));
 
     return 1;

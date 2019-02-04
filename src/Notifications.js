@@ -11,56 +11,51 @@ const cn = 'Notifications';
 
 /**
  * @class
+ *
+ * @param {object} [params]
+ * @param {string[]} [params.align]
+ * @param {string} [params.animationHideName]
+ * @param {string} [params.animationShowName]
+ * @param {number} [params.margin]
+ * @param {number} [params.marginBottom]
+ * @param {number} [params.marginLeft]
+ * @param {number} [params.marginRight]
+ * @param {number} [params.marginTop]
  */
 class Notifications extends TiieObject {
 
     /**
-     * Prepare notifications for given target.
+     * Prepare notifications for given frames.
      */
-    constructor(frames, target, params = {}) {
+    constructor(frames, params = {}) {
         super();
 
         let p = this.__private(cn, {
-            // Target to attach notifications.
-            target,
-
             // Frames for target.
-            frames : null,
+            frames,
 
             // Layer with notifications.
             framesLayer : null,
 
-            // Name of loader
-            framesLayerName : `notifications${this.id()}`,
+            // Name of loader.
+            framesLayerName : `notifications-${this.id()}`,
 
             // List of notifications.
             notifications : [],
         });
 
-        // Attach frames for target. Generally Notifications uses Frames.
-        p.frames = frames.attach(target, {
-            fixed : params.fixed,
-            zIndex : params.zIndex,
-        });
-
-        // Create default layer.
+        // Create default layer for notifications.
         p.framesLayer = p.frames.createLayer(p.framesLayerName, {
             layout : FramesLayout.TYPE_STACK,
-            align : params.align ? params.align : ["right"],
-            animationShow : {
-                name : FramesAnimation.ANIMATION_SLIDE_IN_FROM_TOP,
-                params : {},
-            },
-            animationHide : {
-                name : FramesAnimation.ANIMATION_ZOOM_OUT,
-                params : {},
-            },
 
+            align : params.align ? params.align : ["right"],
+            animationHideName : params.animationHideName,
+            animationShowName : params.animationShowName,
             margin : params.margin,
-            marginTop : params.marginTop,
+            marginBottom : params.marginBottom,
             marginLeft : params.marginLeft,
             marginRight : params.marginRight,
-            marginBottom : params.marginBottom,
+            marginTop : params.marginTop,
         });
     }
 
