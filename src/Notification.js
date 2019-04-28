@@ -2,11 +2,12 @@ import TiieObject from "Tiie/Object";
 import jQuery from "jquery";
 
 import icons from "./resources/icons.js";
+import View from "Tiie/View";
 
 const cn = 'Notification';
-class Notification extends TiieObject {
+class Notification extends View {
     constructor(params = {}) {
-        super();
+        super(`<div class="em-notifications__notification"></div>`);
 
         let p = this.__private(cn, {
             type : Notification.TYPE_NORMAL,
@@ -17,16 +18,16 @@ class Notification extends TiieObject {
         this.set("-title", params.title ? params.title : null);
         this.set("-message", params.message ? params.message : null);
         this.set("-buttons", params.buttons ? params.buttons : []);
-        // this.set("-duration", params.duration ? params.duration : null);
 
         this.set("@visible", 1);
 
-        p.element = jQuery(`<div class="em-notifications__notification --${this.get("type")}"></div>`);
+        this.element().addClass(`--${this.get("type")}`);
 
         if (!this.get("&buttons").some(b => b.id == "close")) {
             this.get("&buttons").push({
-                id : "actionClose",
-                action : "close",
+                id : "close",
+                event : "close",
+                icon : "close",
             });
         }
 
@@ -39,29 +40,15 @@ class Notification extends TiieObject {
             this.render();
         });
 
-        this.on("action.close:run", (event, params) => {
-            // this.emit("action.close:stop")
-            // this.emit("action.close:pouse")
-            // this.emit("action.close:error")
-            this.emit("action.close:finish")
-
+        this.on("events.close", (event) => {
             this.destroy();
-        });
-
-        p.element.on("click", ".em-notifications__notification-action", (event) => {
-            let target = jQuery(event.currentTarget),
-                action = target.data("action")
-            ;
-
-            this.emit(`action.${action}:run`);
-
-            event.stopPropagation();
         });
     }
 
     render() {
         let p = this.__private(cn),
-            buttons = this.get("&buttons")
+            buttons = this.get("&buttons"),
+            icons = this.__component("@icons")
         ;
 
         let html = `
@@ -82,28 +69,20 @@ class Notification extends TiieObject {
                 </div>
                 ` : ``}
             </div>
-            ${buttons.some(b => b.action == "close") ? `
-            <div class="em-notifications__notification-actions">
-            ${buttons.filter(b => b.action == "close").map((button) => {
-                return `
-                <div class="em-notifications__notification-action" data-action="${button.action}">
-                    ${icons.close}
+            ${buttons.some(b => b.event == "close") ? `
+                <div class="em-notifications__notification-actions">
+                    ${buttons.filter(b => b.event == "close").map((button) => {
+                        return `
+                            <div class="em-notifications__notification-action" event-click="${button.event}">
+                                ${icons.get(button.icon)}
+                            </div>
+                        `;
+                    }).join("")}
                 </div>
-                `;
-            }).join("")}
-            </div>
             ` : ``}
         `;
 
-        p.element.html(html);
-
-        return this;
-    }
-
-    element() {
-        let p = this.__private(cn);
-
-        return p.element;
+        this.element().html(html);
     }
 }
 

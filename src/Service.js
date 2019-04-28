@@ -20,10 +20,11 @@ class Service extends TiieObject {
      * Attach notifications mechanism to specific document element.
      *
      * @param {jQuery}   target
-     * @param {boolean}  fixed
      *
      * @param {object} [params]
      * @param {string[]} [params.align]
+     * @param {number} [params.zIndex]
+     * @param {number} [params.fixed]
      * @param {string} [params.animationHideName]
      * @param {string} [params.animationShowName]
      * @param {number} [params.margin]
@@ -34,21 +35,24 @@ class Service extends TiieObject {
      *
      * @return {Tiie.Notifications.Notifications}
      */
-    attach(target, fixed = 0, params = {}) {
+    attach(target, params = {}) {
         let p = this.__private(cn),
-            // First get frames.
-            frames = p.frames.attach(target, fixed)
+            // First attach frames to container.
+            frames = p.frames.attach(target, {
+                zIndex : params.zIndex,
+                fixed : params.fixed,
+            })
         ;
 
         let notifications = new Notifications(frames, {
             align : params.align,
-            animationHideName : params.animationHideName,
-            animationShowName : params.animationShowName,
             margin : params.margin,
             marginBottom : params.marginBottom,
             marginLeft : params.marginLeft,
             marginRight : params.marginRight,
             marginTop : params.marginTop,
+            animationHideName : params.animationHideName,
+            animationShowName : params.animationShowName,
         });
 
         p.notifications.push(notifications);

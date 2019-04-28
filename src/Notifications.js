@@ -49,13 +49,13 @@ class Notifications extends TiieObject {
             layout : FramesLayout.TYPE_STACK,
 
             align : params.align ? params.align : ["right"],
-            animationHideName : params.animationHideName,
-            animationShowName : params.animationShowName,
             margin : params.margin,
             marginBottom : params.marginBottom,
             marginLeft : params.marginLeft,
             marginRight : params.marginRight,
             marginTop : params.marginTop,
+            animationHideName : params.animationHideName,
+            animationShowName : params.animationShowName,
         });
     }
 
@@ -70,7 +70,12 @@ class Notifications extends TiieObject {
         let p = this.__private(cn),
             object = new Notification(params),
             frame = p.frames.create(p.framesLayerName, {
-                width : 500,
+                width : {
+                    esm : "large",
+                    sm : "large",
+                    md : "normal",
+                    lg : "small",
+                },
                 height : "auto",
             })
         ;
@@ -79,23 +84,16 @@ class Notifications extends TiieObject {
             object,
             frame,
             destroyed : 0,
-            hover : 0,
+            duration : params.duration == undefined ? 5 : params.duration,
         };
 
+        // Render notification
         object.render();
 
+        // Push to notifications list
         p.notifications.push(notification);
 
-        if (params.duration) {
-            setTimeout(function() {
-                notification.destroyed = 1;
-            }, params.duration);
-        } else {
-            setTimeout(function() {
-                notification.destroyed = 1;
-            }, 3000);
-        }
-
+        // Append to frame
         frame.element().append(object.element());
 
         return object;
@@ -103,37 +101,32 @@ class Notifications extends TiieObject {
 
     reload() {
         let p = this.__private(cn),
-            destroyed = 0
+            hover = p.notifications.some(n => !n.object.is("@destroyed") && n.object.is("@hover")),
+            destroyed = false
         ;
 
-        if (p.notifications.some(notification => notification.frame.is("@hover"))) {
-            return;
+        for(let i = 0; i < p.notifications.length; i++) {
+            let notification = p.notifications[i];
+
+            if(notification.object.is("@destroyed")) {
+                notification.frame.destroy();
+                notification.destroyed = 1;
+                destroyed = true;
+            } else {
+                if(!hover) {
+                    notification.duration--;
+
+                    if(notification.duration <= 0) {
+                        notification.frame.destroy();
+                        notification.destroyed = 1;
+                        destroyed = true;
+                    }
+                }
+            }
         }
 
-        p.notifications.forEach((notification) => {
-            if (notification.destroyed) {
-                notification.frame.destroy();
-
-                destroyed = 1;
-                return;
-            }
-
-            if (notification.object.is("@destroyed")) {
-                notification.frame.destroy();
-
-                destroyed = 1;
-                return;
-            }
-
-            if (!notification.object.is("@visible")) {
-                notification.frame.hide();
-            } else {
-                notification.frame.show();
-            }
-        });
-
         if (destroyed) {
-            p.notifications = p.notifications.filter(notification => !notification.object.is("@destroyed"));
+            p.notifications = p.notifications.filter(notification => !notification.destroyed);
         }
     }
 
