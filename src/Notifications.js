@@ -101,7 +101,7 @@ class Notifications extends TiieObject {
 
     reload() {
         let p = this.__private(cn),
-            hover = p.notifications.some(n => !n.object.is("@destroyed") && n.object.is("@hover")),
+            hover = p.notifications.some(n => !n.object.is("@destroyed") && n.object.is("@view.hover")),
             destroyed = false
         ;
 

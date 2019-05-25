@@ -19,7 +19,7 @@ class Notification extends View {
         this.set("-message", params.message ? params.message : null);
         this.set("-buttons", params.buttons ? params.buttons : []);
 
-        this.set("@visible", 1);
+        this.set("@view.visible", 1);
 
         this.element().addClass(`--${this.get("type")}`);
 
